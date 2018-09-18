@@ -3,7 +3,7 @@ group, labels = kNN.createDataSet()
 kNN.classify0([0, 0], group, labels, 3)
 
 # 读取文件为矩阵
-from imp import reload
+from importlib import reload
 reload(kNN)
 datingDataMat, datingLabels = kNN.file2matrix('datingTestSet2.txt')
 

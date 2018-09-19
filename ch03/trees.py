@@ -84,3 +84,38 @@ def majorityCnt(classList):
 """
 创建树的函数代码
 """
+def createTree(dataSet, labels):
+    classList = [example[-1] for example in dataSet]
+    # 类别完全相同则停止继续划分
+    if classList.count(classList[0]) == len(classList):
+        return classList[0]
+    # 遍历完所有特征时返回出现次数最多的类别
+    if len(dataSet[0]) == 1:
+        return majorityCnt(classList)
+    bestFeat = chooseBestFeatureToSplit(dataSet)
+    bestFeatLabel = labels[bestFeat]
+    myTree = {bestFeatLabel: {}}
+    # 得到列表包含的所有属性值
+    del(labels[bestFeat])
+    featValues = [example[bestFeat] for example in dataSet]
+    uniqueVals = set(featValues)
+    for value in uniqueVals:
+        subLabels = labels[:]
+        myTree[bestFeatLabel][value] = createTree(splitDataSet(dataSet, bestFeat, value), subLabels)
+    return myTree
+
+"""
+使用决策树的分类函数
+"""
+def classify(inputTree, featLabels, testVec):
+    firstStr = list(inputTree)[0]
+    secondDict = inputTree[firstStr]
+    # 将标签字符串转换为索引
+    featIndex = featLabels.index(firstStr)
+    key = testVec[featIndex]
+    valueOfFeat = secondDict[key]
+    if isinstance(valueOfFeat, dict):
+        classLabel = classify(valueOfFeat, featLabels, testVec)
+    else:
+        classLabel = valueOfFeat
+    return classLabel

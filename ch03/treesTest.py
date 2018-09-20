@@ -46,3 +46,25 @@ treePlotter.createPlot(myTree)
 myTree['no surfacing'][3]='maybe'
 myTree
 treePlotter.createPlot(myTree)
+
+# 测试分类函数
+myDat, labels = trees.createDataSet()
+labels
+myTree = treePlotter.retrieveTree(0)
+myTree
+trees.classify(myTree, labels, [1, 0])
+trees.classify(myTree, labels, [1, 1])
+
+from importlib import reload
+reload(trees)
+# 测试pickle决策树存储
+trees.storeTree(myTree, 'classifierStorage.txt')
+trees.grabTree('classifierStorage.txt')
+
+# 加载隐形眼镜数据
+fr = open('lenses.txt')
+lenses = [inst.strip().split('\t') for inst in fr.readlines()]
+lensesLabels = ['age', 'prescript', 'astigmatic', 'tearRate']
+lensesTree = trees.createTree(lenses, lensesLabels)
+lensesTree
+treePlotter.createPlot(lensesTree)

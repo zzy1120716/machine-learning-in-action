@@ -80,6 +80,13 @@ def testingNB():
     thisDoc = array(setOfWords2Vec(myVocabList, testEntry))
     print(testEntry, 'classified as: ', classifyNB(thisDoc, p0V, p1V, pAb))
 
+def bagOfWords2VecMN(vocabList, inputSet):
+    returnVec = [0]*len(vocabList)
+    for word in inputSet:
+        if word in vocabList:
+            returnVec[vocabList.index(word)] += 1
+    return returnVec
+
 """
 文件解析
 """
@@ -157,18 +164,18 @@ def localWords(feed1, feed0):
         if pairW[0] in vocabList: vocabList.remove(pairW[0])
     trainingSet = range(2*minLen); testSet = []           # create test set
     for i in range(20):
-        randIndex = int(np.random.uniform(0, len(trainingSet)))
+        randIndex = int(random.uniform(0, len(trainingSet)))
         testSet.append(trainingSet[randIndex])
         del(list(trainingSet)[randIndex])
     trainMat = []; trainClasses = []
     for docIndex in trainingSet:  # train the classifier (get probs) trainNB0
         trainMat.append(bagOfWords2VecMN(vocabList, docList[docIndex]))
         trainClasses.append(classList[docIndex])
-    p0V, p1V, pSpam = trainNB0(np.array(trainMat), np.array(trainClasses))
+    p0V, p1V, pSpam = trainNB0(array(trainMat), array(trainClasses))
     errorCount = 0
     for docIndex in testSet:        # classify the remaining items
         wordVector = bagOfWords2VecMN(vocabList, docList[docIndex])
-        if classifyNB(np.array(wordVector), p0V, p1V, pSpam) != classList[docIndex]:
+        if classifyNB(array(wordVector), p0V, p1V, pSpam) != classList[docIndex]:
             errorCount += 1
     print('the error rate is: ', float(errorCount)/len(testSet))
     return vocabList, p0V, p1V

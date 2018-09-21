@@ -60,14 +60,14 @@ python setup.py install
 """
 # 打开Craigslist上的RSS源
 import feedparser
-ny = feedparser.parse('http://newyork.craigslist.org/stp/index.rss')
+ny = feedparser.parse('https://newyork.craigslist.org/search/res?format=rss')
 ny['entries']
 len(ny['entries'])
 
 # 测试RSS源分类器
 reload(bayes)
-ny = feedparser.parse('http://newyork.craigslist.org/stp/index.rss')
-sf = feedparser.parse('http://sfbay.craigslist.org/stp/index.rss')
+ny = feedparser.parse('https://newyork.craigslist.org/search/res?format=rss')
+sf = feedparser.parse('https://sfbay.craigslist.org/search/res?format=rss')
 vocabList, pSF, pNY = bayes.localWords(ny, sf)
 vocabList, pSF, pNY = bayes.localWords(ny, sf)
 # 显示词汇
